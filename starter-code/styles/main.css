@@ -1,0 +1,73 @@
+* {
+  box-sizing: border-box;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+body {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+section {
+  display: flex;
+}
+
+h1 {
+  font-family: 'Press Start 2P', cursive;
+  color: white;
+  font-size: 55px;
+  margin: 0;
+}
+
+h2 {
+  color: white;
+  font-size: 30px;
+}
+
+div.grid {
+  width: 440px;
+  height: 440px;
+  display: flex;
+  flex-wrap: wrap;
+  box-shadow:
+      0 0 40px 15px rgb(69, 185, 108),  /* inner white */
+      0 0 50px 15px rgb(95, 219, 143), /* middle magenta */
+      0 0 60px 15px rgb(85, 204, 145);
+}
+div.grid-item {
+  width: 40px;
+  height: 40px;
+  border: .5px dashed grey;
+}
+
+div.grid-item.snake {
+  width: 40px;
+  height: 40px;
+  background-color: rgb(93, 105, 97);
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-radius: 20%;
+}
+
+div.grid-item.apple {
+  width: 40px;
+  height: 40px;
+  background-color:red;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-radius: 100%;
+  box-shadow:
+        inset 5px 0 10px rgb(221, 50, 50),  /* left magenta */
+        inset -10px 0 10px rgb(241, 167, 179); /* right cyan */
+}
+
+button {
+  margin: 30px;
+  font-size: 20px;
+  padding: 10px, 5px;
+}
