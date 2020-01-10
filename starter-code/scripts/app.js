@@ -3,8 +3,9 @@ function init() {
   const grid = document.querySelector('.grid')
   const startBtn = document.querySelector('.start')
   const stopBtn = document.querySelector('.stop')
+  const sound1 = document.querySelector('.eat-sound')
+  const sound2 = document.querySelector('.crash-sound')
   
-
   const squares = []
   const width = 11
   const max = 121
@@ -25,26 +26,34 @@ function init() {
   })
 
   //!Functions
+  function eatSound() {
+    sound1.play()
+  }
+
+  function crashSound() {
+    sound2.play()
+  }
+
   //Starting position of the snake (non-random)
   function addSnake() {
     playerIndex.map(index => squares[index].classList.add('snake'))
-    // squares[playerIndex[0]].classList.add('head')
     collision()
   }
 
   //Function to remove the head and snake classes 
   function removeSnake() {
     playerIndex.map(index => squares[index].classList.remove('snake'))
-    // squares[playerIndex[0]].classList.remove('head')
   }
-  
+
   //Start position of food
   function addApple(max) {
-    // if (!squares[playerIndex].classList.contains('snake')
     const appleIndex = Math.floor(Math.random() * Math.floor(max))
     squares[appleIndex].classList.add('apple')
-    // const appleIndex = Math.floor(Math.random() * Math.floor(max))
-    // squares[appleIndex].classList.add('apple')
+    if (squares[appleIndex].classList.contains('snake')) {
+      console.log('apple on snake')
+      removeApple()
+      addApple(max)
+    }  
   }
   
   function removeApple() {
@@ -54,20 +63,23 @@ function init() {
   //Add food eaten to snakeBody array
   function eatFood() {
     if (squares[playerIndex[0]].classList.contains('apple')) {
+      eatSound()
       squares[playerIndex[0]].classList.remove('apple')
+      console.log(playerIndex, 'pre-unshift move')
       playerIndex.unshift(playerIndex[0])
+      console.log(playerIndex, 'post-unshift move')
       score += 5
       document.querySelector('.score').innerHTML = score
       clearInterval(move)
-      getFaster = getFaster - 10
-      move = setInterval(snakeMove , getFaster)
+      getFaster -= 50
+      move = setInterval(snakeMove, getFaster)
       addApple(max)
 
     } 
   }
     
   function collision() {
-    for (var i = 1; i < squares.length; i++)
+    for (let i = 1; i < squares.length; i++)
       if (playerIndex[0] === playerIndex[i]) {
         gameOver()
       }            
@@ -77,6 +89,7 @@ function init() {
   }
 
   function gameOver() {
+    crashSound()
     gameInPlay = false
     clearInterval(move)
     clearGrid()
@@ -107,7 +120,6 @@ function init() {
     }
     if (direction === 'down' && playerIndex[0] + width < width * width) {
       removeSnake()
-      // if snake hits a wall
       playerIndex.pop()
       playerIndex.unshift(playerIndex[0] + width)
       addSnake()
@@ -116,7 +128,6 @@ function init() {
     }
     if (direction === 'up' && playerIndex[0] - width >= 0) {
       removeSnake()
-      // if snake hits a wall
       playerIndex.pop()
       playerIndex.unshift(playerIndex[0] - width)
       addSnake()
@@ -150,7 +161,6 @@ function init() {
   //Move the snake through the squares array square by square continuously
   function startGame() {
     if (!gameInPlay) {
-      // gameInPlay = true
       addSnake()
       addApple(max)
       getFaster = 500
@@ -159,8 +169,6 @@ function init() {
       clearInterval(move)
     }
   }
-
-  console.log(squares)
 
   //Stop button for a quick way to end the interval
   function stopTimer() {
